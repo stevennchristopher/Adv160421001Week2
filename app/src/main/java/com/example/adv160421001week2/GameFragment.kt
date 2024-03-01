@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.adv160421001week2.databinding.FragmentGameBinding
+import kotlin.random.Random
 
 class GameFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
@@ -25,8 +26,24 @@ class GameFragment : Fragment() {
             val playerName = GameFragmentArgs.fromBundle(requireArguments()).playerName
             binding.txtTurn.text = "$playerName's Turn"
         }
-            binding.btnBack.setOnClickListener{
-            val action = GameFragmentDirections.actionMainFragment()
+
+        var num1 = Random.nextInt(0, 99)
+        var num2 = Random.nextInt(0, 99)
+        var answer = num1 + num2
+
+        binding.txtNum1.text = num1.toString()
+        binding.txtNum2.text = num2.toString()
+
+        binding.btnSubmit.setOnClickListener{
+            var result = "GAME OVER"
+            var score = 0
+
+            if(binding.txtAnswer.text.toString() == answer.toString()){
+                result = "WIN"
+                score = 1
+            }
+
+            val action = GameFragmentDirections.actionResultFragment(result, score)
             Navigation.findNavController(it).navigate(action)
         }
     }
